@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Lab technicians{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5">
+    <header class="text-center mb-5">
+        <h1 class="cf-page-title h4 mb-2">Laboratory practitioner roster</h1>
+        <p class="cf-page-lead mb-0">Credential highlights for every onboarded technician captured in Django.</p>
+    </header>
+
+    {% if tech_details %}
+    <div class="row row-cols-1 row-cols-lg-2 g-4">
+        {% for i in tech_details %}
+        <div class="col">
+            <div class="card h-100 cf-card-hover border-0 cf-animate-in">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+                        <div>
+                            <h2 class="h5 fw-bold mb-1">{{ i.user }}</h2>
+                            <p class="text-muted small mb-0"><span class="badge bg-dark bg-opacity-10 text-muted">Emp #{{ i.emp_id }}</span>
+                            </p>
+                        </div>
+                        <i class="bi bi-eye-dropper fs-4 text-primary"></i>
+                    </div>
+                    <ul class="list-unstyled small text-secondary lh-lg mb-0">
+                        <li class="mb-2 pb-2 border-bottom"><strong class="text-dark d-block mb-1">Qualification</strong>{{ i.qualification }}</li>
+                        <li class="mb-2 pb-2 border-bottom"><strong class="text-dark d-block mb-1">Experience</strong>{{ i.years_of_experiance }} yrs</li>
+                        <li class="mb-0 pt-2"><strong class="text-dark d-block mb-1">Address</strong>{{ i.address }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="cf-empty-state card cf-card-hover border py-5 text-center mb-5">
+        <i class="bi bi-people"></i>
+        <p class="mt-3 mb-0 text-muted">No lab technicians enrolled yet.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

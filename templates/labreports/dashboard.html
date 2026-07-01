@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Lab dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5">
+    <header class="mb-4">
+        <h1 class="cf-page-title h4 mb-2">Laboratory throughput</h1>
+        <p class="cf-page-lead mb-0">Historical tests with lightweight pagination retained from your Django view logic.</p>
+    </header>
+
+    <div class="card cf-card-hover border-0 overflow-hidden cf-animate-in">
+        {% if records.object_list %}
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-cf align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Doctor</th>
+                        <th scope="col">Patient</th>
+                        <th scope="col">Test</th>
+                        <th scope="col" class="text-end">Cost</th>
+                        <th scope="col">Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in records %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ i.reffered_by }}</td>
+                        <td>{{ i.patient_name }}</td>
+                        <td>{{ i.lab_test }}</td>
+                        <td class="text-end fw-semibold">{{ i.test_cost }}</td>
+                        <td class="text-muted small">{{ i.created_at }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="cf-empty-state py-5">
+            <i class="bi bi-clipboard-data"></i>
+            <p class="mt-3 mb-0">No laboratory records uploaded for this pagination window.</p>
+        </div>
+        {% endif %}
+
+        {% if records.paginator.num_pages > 1 %}
+        <nav class="p-3 border-top bg-light" aria-label="Lab records pagination">
+            <ul class="pagination pagination-sm justify-content-center mb-0 flex-wrap">
+                <li class="page-item">
+                    <a class="page-link rounded-pill px-3" href="?pg=1">&laquo;</a>
+                </li>
+                {% if records.has_previous %}
+                <li class="page-item"><a class="page-link rounded-pill" href="?pg={{ records.previous_page_number }}">{{ records.previous_page_number }}</a></li>
+                {% endif %}
+                <li class="page-item active"><a class="page-link rounded-pill" href="#">{{ records.number }}</a></li>
+                {% if records.has_next %}
+                <li class="page-item"><a class="page-link rounded-pill" href="?pg={{ records.next_page_number }}">{{ records.next_page_number }}</a></li>
+                {% endif %}
+                <li class="page-item"><a class="page-link rounded-pill px-3" href="?pg={{ records.paginator.num_pages }}">&raquo;</a></li>
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

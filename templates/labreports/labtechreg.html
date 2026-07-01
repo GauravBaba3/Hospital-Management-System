@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Register lab technician{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-7">
+            <header class="text-center mb-4">
+                <h1 class="cf-page-title h4 mb-2">Laboratory technician onboarding</h1>
+                <p class="cf-page-lead mb-0">Preserve the Django form semantics while aligning with portal styling.</p>
+            </header>
+            <div class="card cf-card-hover border-0 cf-animate-in p-4 p-md-5 shadow-sm">
+                <form action="" method="post" class="needs-validation">
+                    {% csrf_token %}
+                    {{ form1|crispy }}
+                    <button type="submit" class="btn btn-primary cf-btn-primary btn-lg px-4 rounded-pill mt-2"><i
+                            class="bi bi-send-fill me-2"></i>Submit credentials</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

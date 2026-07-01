@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Treatments{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5">
+    <header class="text-center mb-5 cf-animate-in">
+        <h1 class="cf-page-title h3 mb-2">Treatment pathway catalog</h1>
+        <p class="cf-page-lead mx-auto" style="max-width: 640px;">Explore medical programs curated by speciality. Select a pathway to reveal
+            doctors who oversee that service line.</p>
+    </header>
+
+    <div class="row g-4">
+        {% for tre in treat1 %}
+        <div class="col-12">
+            <article class="card cf-card-hover border-0 overflow-hidden">
+                <div class="card-body p-4 p-md-5">
+                    <div class="d-flex flex-column flex-lg-row gap-3 justify-content-lg-between align-items-lg-start mb-3">
+                        <div>
+                            <a href="{% url 'doctorslist' tre.treatment_name %}"
+                                class="h4 fw-bold text-decoration-none text-reset d-inline">{{ tre.treatment_name }}</a>
+                            <span class="badge bg-secondary rounded-pill text-wrap ms-lg-3 mt-2 mt-lg-0">{{ tre.get_catogery_display }}</span>
+                        </div>
+                        <span class="text-muted small text-lg-end"><i class="bi bi-person-badge me-1"></i>Lead clinician: {{ tre.doctorname.name }}</span>
+                    </div>
+                    <p class="text-secondary mb-0 lh-lg">{{ tre.description }}</p>
+                </div>
+            </article>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="cf-empty-state card border cf-card-hover p-5">
+                <i class="bi bi-clipboard-plus d-block mb-3"></i>
+                <p class="mb-0">Treatments need to be created in Django admin before appearing here.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

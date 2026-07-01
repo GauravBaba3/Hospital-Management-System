@@ -1,0 +1,163 @@
+/* CareFlow — healthcare UI theme */
+:root {
+  --cf-primary: #0d6efd;
+  --cf-primary-dark: #0b5ed7;
+  --cf-accent: #0aa2c0;
+  --cf-accent-soft: rgba(10, 162, 192, 0.12);
+  --cf-body-bg: #f4f7f9;
+  --cf-surface: #ffffff;
+  --cf-border: rgba(13, 110, 253, 0.12);
+  --cf-text: #1e293b;
+  --cf-text-muted: #64748b;
+  --cf-shadow: 0 0.125rem 0.75rem rgba(15, 23, 42, 0.06);
+  --cf-shadow-lg: 0 0.5rem 1.5rem rgba(15, 23, 42, 0.08);
+  --cf-radius: 0.75rem;
+  --cf-radius-sm: 0.5rem;
+  --cf-transition: 0.22s ease;
+}
+
+body.theme-body {
+  background-color: var(--cf-body-bg);
+  color: var(--cf-text);
+  font-feature-settings: "kern" 1;
+}
+
+.cf-navbar {
+  background: var(--cf-surface) !important;
+  box-shadow: var(--cf-shadow);
+  border-bottom: 1px solid var(--cf-border);
+}
+
+.cf-navbar .navbar-brand {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--cf-text) !important;
+}
+
+.cf-navbar .nav-link {
+  font-weight: 500;
+  color: var(--cf-text-muted) !important;
+  border-radius: var(--cf-radius-sm);
+  padding: 0.4rem 0.75rem !important;
+  margin: 0 0.05rem;
+  transition: color var(--cf-transition), background var(--cf-transition), transform var(--cf-transition);
+}
+
+.cf-navbar .nav-link:hover,
+.cf-navbar .nav-link:focus {
+  color: var(--cf-primary) !important;
+  background: var(--cf-accent-soft);
+}
+
+.cf-navbar .nav-link.active {
+  color: var(--cf-primary) !important;
+  background: var(--cf-accent-soft);
+}
+
+.cf-footer {
+  background: var(--cf-surface);
+  border-top: 1px solid var(--cf-border);
+  margin-top: auto;
+}
+
+.cf-page-header {
+  margin-bottom: 1.5rem;
+}
+
+.cf-page-title {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--cf-text);
+  margin-bottom: 0.25rem;
+}
+
+.cf-page-lead {
+  color: var(--cf-text-muted);
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+.cf-card-hover {
+  transition: box-shadow var(--cf-transition), transform var(--cf-transition), border-color var(--cf-transition);
+  border: 1px solid var(--cf-border) !important;
+  border-radius: var(--cf-radius) !important;
+  box-shadow: var(--cf-shadow);
+  background: var(--cf-surface);
+}
+
+.cf-card-hover:hover {
+  box-shadow: var(--cf-shadow-lg);
+  transform: translateY(-3px);
+  border-color: rgba(13, 110, 253, 0.25) !important;
+}
+
+.cf-auth-card {
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cf-hero-doctors {
+  background: linear-gradient(135deg, #e0f7fa 0%, #e3f2fd 45%, #f5f9ff 100%);
+  border: 1px solid var(--cf-border);
+  border-radius: 1rem;
+  box-shadow: var(--cf-shadow-lg);
+}
+
+.cf-btn-primary {
+  border-radius: var(--cf-radius-sm);
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  transition: transform var(--cf-transition), box-shadow var(--cf-transition), background var(--cf-transition);
+}
+
+.cf-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0.35rem 1rem rgba(13, 110, 253, 0.35);
+}
+
+.table-cf thead th {
+  background: #f8fafc;
+  color: var(--cf-text-muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom-width: 1px;
+}
+
+.table-cf td {
+  vertical-align: middle;
+}
+
+.cf-empty-state {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--cf-text-muted);
+}
+
+.cf-empty-state i {
+  font-size: 2.5rem;
+  opacity: 0.35;
+}
+
+@keyframes cf-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cf-animate-in {
+  animation: cf-fade-up 0.45s ease both;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: rgba(13, 110, 253, 0.45);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+}

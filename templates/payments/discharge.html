@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Discharge summary{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-11 col-xl-9">
+            <header class="text-center mb-4">
+                <h1 class="cf-page-title h4 mb-2">Clinical discharge worksheet</h1>
+                <p class="cf-page-lead mb-0">Fields render through crispy forms so validations stay routed through Django.</p>
+            </header>
+            <div class="card cf-card-hover border-0 cf-animate-in p-4 p-md-5 mb-5">
+                <form action="" method="post" class="needs-validation" id="discharge-form" novalidate>
+                    {% csrf_token %}
+                    {{ forms | crispy }}
+                    <div class="d-flex gap-3 flex-wrap mt-4 pt-3 border-top">
+                        <input type="submit" value="Submit discharge" class="btn btn-primary cf-btn-primary btn-lg px-4 rounded-pill">
+                        <a href="{% url 'doctorshome' %}" class="btn btn-outline-secondary rounded-pill align-self-center">Discard</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (function () {
+        /**
+         * Inclusive nights/days aligned with Django clean(): (discharge - admission).days + 1
+         */
+        function inclusiveDays(admitIso, dischargeIso) {
+            if (!admitIso || !dischargeIso) return '';
+            var a = new Date(admitIso + 'T12:00:00');
+            var d = new Date(dischargeIso + 'T12:00:00');
+            if (d < a) return '';
+            var msPerDay = 86400000;
+            return Math.floor((d - a) / msPerDay) + 1;
+        }
+
+        function updateTotalDays(root) {
+            root = root || document;
+            var admit = root.querySelector('#id_date_of_addm') || root.querySelector('.cf-date-admit');
+            var discharge = root.querySelector('#id_date_of_discharge') || root.querySelector('.cf-date-discharge');
+            var total = root.querySelector('#id_total_days') || root.querySelector('.cf-total-days');
+            if (!admit || !discharge || !total) return;
+            var n = inclusiveDays(admit.value, discharge.value);
+            if (n === '') {
+                total.value = '';
+                return;
+            }
+            total.value = String(n);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('discharge-form');
+            if (!form) return;
+            function datesChanged(t) {
+                if (!t || !t.id) return false;
+                return t.id === 'id_date_of_addm' || t.id === 'id_date_of_discharge';
+            }
+            form.addEventListener('change', function (e) {
+                if (datesChanged(e.target)) updateTotalDays(form);
+            });
+            form.addEventListener('input', function (e) {
+                if (datesChanged(e.target)) updateTotalDays(form);
+            });
+            updateTotalDays(form);
+        });
+    })();
+</script>
+{% endblock %}

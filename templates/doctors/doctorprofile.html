@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ doc.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb small mb-4">
+            <li class="breadcrumb-item"><a href="{% url 'alldoctors' %}" class="text-decoration-none">Doctors</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ doc.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="card cf-card-hover border-0 overflow-hidden cf-animate-in mb-5">
+        <div class="row g-0">
+            <div class="col-lg-5 bg-primary bg-opacity-10 p-5 d-flex flex-column align-items-center justify-content-center border-end border-opacity-25">
+                {% if doc.docpic %}
+                <img src="{{ doc.docpic.url }}" alt=""
+                    class="rounded-4 shadow-lg img-fluid mb-4" style="max-height: 420px; object-fit: cover; width: 100%;">
+                {% else %}
+                <div class="rounded-4 bg-white border shadow-sm text-muted d-flex align-items-center justify-content-center mb-4"
+                    style="width: min(280px, 100%); aspect-ratio: 3/4;">
+                    <span class="text-center px-4"><i class="bi bi-image fs-2 d-block mb-2 opacity-50"></i><span class="small">Photo
+                            not uploaded</span></span>
+                </div>
+                {% endif %}
+                <span class="badge bg-primary px-3 py-2">{{ doc.get_specs_display }}</span>
+            </div>
+            <div class="col-lg-7 p-4 p-xl-5">
+                <div class="d-flex flex-column flex-lg-row gap-3 justify-content-lg-between align-items-lg-start mb-4">
+                    <div>
+                        <h1 class="h3 fw-bold mb-2">{{ doc.name }}</h1>
+                        <p class="text-muted mb-0"><i class="bi bi-geo-alt me-1"></i>{{ doc.loc }}</p>
+                    </div>
+                    <a href="{% url 'appointment' doc.id %}" class="btn btn-primary cf-btn-primary rounded-pill align-self-lg-center"><i
+                            class="bi bi-calendar-heart me-2"></i>Book appointment</a>
+                </div>
+
+                <dl class="row gy-3 small mb-4">
+                    <div class="col-sm-6 d-flex gap-3 p-3 rounded-3 bg-light">
+                        <dt class="m-0 text-muted fw-semibold"><i class="bi bi-mortarboard me-2"></i>Specialty</dt>
+                        <dd class="m-0 ms-auto">{{ doc.get_specs_display }}</dd>
+                    </div>
+                    <div class="col-sm-6 d-flex gap-3 p-3 rounded-3 bg-light">
+                        <dt class="m-0 text-muted fw-semibold"><i class="bi bi-person me-2"></i>Age</dt>
+                        <dd class="m-0 ms-auto">{{ doc.age }}</dd>
+                    </div>
+                    <div class="col-sm-6 d-flex gap-3 p-3 rounded-3 bg-light">
+                        <dt class="m-0 text-muted fw-semibold"><i class="bi bi-phone me-2"></i>Phone</dt>
+                        <dd class="m-0 ms-auto text-break">{{ doc.phone }}</dd>
+                    </div>
+                    <div class="col-sm-12 d-flex flex-column flex-sm-row gap-2 gap-sm-3 p-3 rounded-3 bg-light">
+                        <dt class="m-0 text-muted fw-semibold"><i class="bi bi-envelope-open me-2"></i>Email</dt>
+                        <dd class="m-0 flex-grow-1 text-break">{{ doc.mail }}</dd>
+                    </div>
+                </dl>
+
+                <div class="border-top pt-4">
+                    <h2 class="h6 text-uppercase text-muted fw-bold mb-3">About {{ doc.name }}</h2>
+                    <p class="text-secondary mb-0 lh-lg">{{ doc.about }}</p>
+                </div>
+
+                <div class="mt-4 d-flex gap-3">
+                    <a href="{% url 'alldoctors' %}" class="btn btn-outline-secondary rounded-pill"><i
+                            class="bi bi-arrow-left me-2"></i>Back to directory</a>
+                    <a href="{% url 'treatment' %}" class="btn btn-outline-primary rounded-pill">Related treatments</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

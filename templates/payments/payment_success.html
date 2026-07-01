@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment successful{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9 col-xl-8">
+            <div class="card cf-card-hover border-0 shadow-lg overflow-hidden cf-animate-in text-center">
+                <div class="bg-success bg-opacity-10 py-5 px-4">
+                    <div class="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center mb-3 shadow"
+                        style="width: 88px; height: 88px;">
+                        <i class="bi bi-check-lg display-5"></i>
+                    </div>
+                    <h1 class="h3 fw-bold text-success mb-2">Payment successful</h1>
+                    <p class="text-muted mb-0">Thank you. Your hospital bill has been marked as paid in this demo.</p>
+                </div>
+                <div class="card-body p-4 p-md-5 text-start">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <p class="small text-uppercase text-muted fw-bold mb-1">Payment ID</p>
+                            <p class="font-monospace fs-5 fw-bold text-primary mb-0 user-select-all">{{ receipt.payment_id }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="small text-uppercase text-muted fw-bold mb-1">Paid on</p>
+                            <p class="fw-semibold mb-0">{{ receipt.paid_at_display }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="small text-uppercase text-muted fw-bold mb-1">Patient name</p>
+                            <p class="fw-semibold mb-0">{{ receipt.patient_display }}</p>
+                            <p class="small text-muted mb-0">(@{{ receipt.patient_username }})</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="small text-uppercase text-muted fw-bold mb-1">Payment method</p>
+                            <p class="fw-semibold mb-0">{{ receipt.method_label }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="small text-uppercase text-muted fw-bold mb-1">Discharge / bill record</p>
+                            <p class="fw-semibold mb-0">#{{ receipt.bill_id }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="small text-uppercase text-muted fw-bold mb-1">Amount paid</p>
+                            <p class="fs-4 fw-bold text-dark mb-0">&#8377; {{ receipt.amount_paid }}</p>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <h2 class="h6 text-muted text-uppercase fw-bold mb-3">Care context</h2>
+                    <ul class="list-unstyled small text-secondary mb-4">
+                        <li class="mb-2"><strong class="text-dark">Physician:</strong> {{ receipt.doctor_name }}</li>
+                        <li class="mb-2"><strong class="text-dark">Treatment:</strong> {{ receipt.treatment }}</li>
+                        <li class="mb-0"><strong class="text-dark">Room:</strong> {{ receipt.room_type }}</li>
+                    </ul>
+
+                    <div class="p-3 rounded-3 bg-light border small text-muted mb-4">
+                        <strong class="text-dark">Breakdown:</strong> Subtotal &#8377; {{ receipt.billing_subtotal }} + GST ({{ receipt.gst_percent }}%)
+                        &#8377; {{ receipt.gst_amount }} = <strong class="text-dark">&#8377; {{ receipt.amount_paid }}</strong>
+                    </div>
+
+                    <div class="d-flex flex-column flex-sm-row gap-2 justify-content-center">
+                        <a href="{% url 'finalbill' receipt.bill_id %}" class="btn btn-outline-primary rounded-pill">View bill again</a>
+                        <a href="{% url 'doctorshome' %}" class="btn btn-primary cf-btn-primary rounded-pill px-4">Return home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

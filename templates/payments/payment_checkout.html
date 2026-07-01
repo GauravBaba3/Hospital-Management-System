@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Pay bill{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-xl-10">
+            <header class="mb-4 cf-animate-in">
+                <nav aria-label="breadcrumb" class="mb-2">
+                    <ol class="breadcrumb small mb-0">
+                        <li class="breadcrumb-item"><a href="{% url 'finalbill' bill.id %}">Final bill</a></li>
+                        <li class="breadcrumb-item active">Checkout</li>
+                    </ol>
+                </nav>
+                <h1 class="cf-page-title h4 mb-1">Complete payment</h1>
+                <p class="cf-page-lead mb-0">Choose a UPI, wallet, card, or net banking option. This is a <strong
+                        class="text-muted">demo flow</strong>—no money is deducted.</p>
+            </header>
+
+            {% if payment_error %}
+            <div class="alert alert-danger border-0 rounded-3 shadow-sm mb-4" role="alert">
+                <i class="bi bi-exclamation-octagon-fill me-2"></i>{{ payment_error }}
+            </div>
+            {% endif %}
+
+            <div class="row g-4">
+                <div class="col-lg-5 order-lg-2">
+                    <div class="card cf-card-hover border-0 shadow-sm sticky-lg-top cf-animate-in" style="top: 5rem;">
+                        <div class="card-body p-4">
+                            <h2 class="h6 text-uppercase text-muted fw-bold mb-3">Amount due</h2>
+                            <p class="display-6 fw-bold text-primary mb-1">&#8377; {{ grand_total }}</p>
+                            <p class="small text-muted mb-4">Bill #{{ bill.id }} · {{ bill.Patient_name.user.username }}</p>
+                            <hr class="opacity-25">
+                            <dl class="row small mb-0">
+                                <dt class="col-7 text-muted">Subtotal</dt>
+                                <dd class="col-5 text-end mb-2">&#8377; {{ billing_subtotal }}</dd>
+                                <dt class="col-7 text-muted">GST @ {{ gst_percent }}%</dt>
+                                <dd class="col-5 text-end mb-0">&#8377; {{ gst_amount }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7 order-lg-1">
+                    <form method="post" class="card cf-card-hover border-0 shadow-sm cf-animate-in">
+                        {% csrf_token %}
+                        <div class="card-header bg-white border-bottom py-3 px-4">
+                            <h2 class="h6 fw-bold mb-0"><i class="bi bi-wallet2 me-2 text-primary"></i>Select payment method</h2>
+                        </div>
+                        <div class="list-group list-group-flush rounded-0">
+                            {% for key, meta in payment_methods.items %}
+                            <label
+                                class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 px-4 cursor-pointer payment-option">
+                                <input class="form-check-input flex-shrink-0 mt-0" type="radio" name="payment_method"
+                                    value="{{ key }}" required{% if forloop.first %} checked{% endif %}>
+                                <span class="d-inline-flex align-items-center justify-content-center rounded-circle bg-light text-primary border"
+                                    style="width: 44px; height: 44px;">
+                                    <i class="bi bi-{{ meta.icon }}"></i>
+                                </span>
+                                <span class="fw-semibold">{{ meta.label }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <div class="card-body p-4 border-top bg-light bg-opacity-50">
+                            <p class="small text-muted mb-3"><i class="bi bi-shield-check me-1"></i> After you pay, you’ll see a confirmation with a
+                                generated <strong>payment ID</strong> and patient details.</p>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button type="submit" class="btn btn-success btn-lg cf-btn-primary rounded-pill px-4">
+                                    <i class="bi bi-lock-fill me-2"></i>Pay &#8377; {{ grand_total }}
+                                </button>
+                                <a href="{% url 'finalbill' bill.id %}" class="btn btn-outline-secondary rounded-pill align-self-center">Back to
+                                    bill</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

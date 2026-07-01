@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<div class="container py-4 py-md-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-9 col-xl-8">
+      <div
+        class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center gap-3 mb-4"
+      >
+        <div>
+          <p
+            class="text-uppercase text-muted fw-bold small mb-1 letter-spacing"
+          >
+            Patient profile
+          </p>
+          <h1 class="cf-page-title h4 mb-0">Your CarePortal overview</h1>
+        </div>
+        <a
+          href="{% url 'update_profile' %}"
+          class="btn btn-primary cf-btn-primary rounded-pill px-4"
+          ><i class="bi bi-pencil-square me-2"></i>Edit profile</a
+        >
+      </div>
+
+      <div
+        class="card cf-card-hover border-0 overflow-hidden cf-animate-in mb-4"
+      >
+        <div
+          class="row g-0 align-items-center p-4 p-md-5 border-bottom bg-primary bg-opacity-10"
+        >
+          <div class="col-auto">
+            <div
+              class="rounded-circle border border-white border-4 shadow-sm bg-light overflow-hidden d-flex align-items-center justify-content-center"
+              style="width: 100px; height: 100px"
+            >
+              {% if user.userdetails.userpic %}
+              <img
+                src="{{ user.userdetails.userpic.url }}"
+                alt=""
+                class="w-100 h-100 object-fit-cover"
+              />
+              {% else %}
+              <img
+                src="{% static 'images/avtar.png' %}"
+                alt=""
+                class="w-100 h-100 object-fit-cover"
+                onerror="
+                  this.closest('.rounded-circle').innerHTML =
+                    '<i class=&quot;bi bi-person-fill fs-1 text-secondary&quot;></i>'
+                "
+              />
+              {% endif %}
+            </div>
+          </div>
+          <div class="col mt-3 mt-md-0 ms-md-4">
+            <h2 class="h4 fw-bold mb-1">{{ user.username }}</h2>
+            <p class="text-muted mb-2">
+              <i class="bi bi-envelope me-1"></i>{{ user.email }}
+            </p>
+            <span class="badge bg-primary rounded-pill">Active patient</span>
+          </div>
+        </div>
+
+        <div class="p-4 p-md-5">
+          <div class="row g-4">
+            <div class="col-md-6">
+              <h3
+                class="h6 text-uppercase text-muted fw-bold mb-3 pb-2 border-bottom"
+              >
+                <i class="bi bi-telephone text-primary me-2"></i>Contact
+              </h3>
+              <div class="d-flex gap-3 p-3 rounded-3 bg-light">
+                <i class="bi bi-phone-fill text-secondary fs-5"></i>
+                <div>
+                  <p
+                    class="small text-muted text-uppercase fw-semibold mb-1 letter-spacing-xs"
+                  >
+                    Mobile phone
+                  </p>
+                  <p class="mb-0 fw-semibold">
+                    {{ user.userdetails.phone|default:"—" }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h3
+                class="h6 text-uppercase text-muted fw-bold mb-3 pb-2 border-bottom"
+              >
+                <i class="bi bi-geo text-primary me-2"></i>Address
+              </h3>
+              <ul class="list-unstyled small mb-0">
+                <li class="mb-2 py-2 border-bottom">
+                  <span class="text-muted d-block fw-semibold mb-1"
+                    >Street line</span
+                  >{{ user.userdetails.address|default:"—" }}
+                </li>
+                <li class="mb-2 py-2 border-bottom">
+                  <span class="text-muted d-block fw-semibold mb-1"
+                    >Apartment / suite</span
+                  >{{ user.userdetails.street|default:"—" }}
+                </li>
+                <li class="d-flex gap-4 py-2">
+                  <div>
+                    <span class="text-muted d-block fw-semibold mb-1">City</span
+                    ><span class="fw-medium"
+                      >{{ user.userdetails.city |default:"—" }}</span
+                    >
+                  </div>
+                  <div>
+                    <span class="text-muted d-block fw-semibold mb-1"
+                      >State</span
+                    ><span class="fw-medium"
+                      >{{ user.userdetails.state|default:"—" }}</span
+                    >
+                  </div>
+                  <div>
+                    <span class="text-muted d-block fw-semibold mb-1"
+                      >Postal code</span
+                    ><span class="fw-medium"
+                      >{{ user.userdetails.zipcode|default:"—" }}</span
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 bg-light rounded-4 p-4 text-center mb-5">
+        <p class="text-muted small mb-3 mb-md-0 d-md-inline-block me-md-3">
+          Ready to schedule care?
+        </p>
+        <div
+          class="d-flex flex-column flex-sm-row gap-2 justify-content-center justify-content-md-end"
+        >
+          <a
+            href="{% url 'alldoctors' %}"
+            class="btn btn-outline-primary rounded-pill"
+            ><i class="bi bi-people me-2"></i>Browse doctors</a
+          >
+          <a
+            href="{% url 'treatment' %}"
+            class="btn btn-primary cf-btn-primary rounded-pill"
+            ><i class="bi bi-hospital me-2"></i>View treatments</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

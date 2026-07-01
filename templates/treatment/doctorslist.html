@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Doctors by treatment{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5">
+    <header class="mb-5 cf-animate-in">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item"><a href="{% url 'treatment' %}">Treatments</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Matching clinicians</li>
+            </ol>
+        </nav>
+        <h1 class="cf-page-title h4 mb-2">Clinicians for this pathway</h1>
+        <p class="cf-page-lead mb-0"><i class="bi bi-diagram-3 me-1"></i>Each listing reflects the curated treatment-program pairing maintained in your
+            database.</p>
+    </header>
+
+    {% for doc in doclists %}
+    <div class="card cf-card-hover border-0 mb-4 overflow-hidden cf-animate-in">
+        <div class="row g-0">
+            <div class="col-md-8 p-4 p-xl-5 d-flex flex-column">
+                <div class="mb-3">
+                    <span class="badge bg-primary rounded-pill me-2">{{ doc.get_catogery_display }}</span>
+                    <span class="badge bg-secondary bg-opacity-10 text-secondary border rounded-pill">{{ doc.doctorname.get_specs_display }}</span>
+                </div>
+                <h2 class="h4 fw-bold mb-2">{{ doc.doctorname.name }}</h2>
+                <p class="text-muted small mb-3"><i class="bi bi-geo-alt me-1"></i>{{ doc.doctorname.loc }} • Age {{ doc.doctorname.age }}</p>
+
+                <ul class="list-unstyled small text-secondary lh-lg mb-4">
+                    <li class="mb-2"><strong class="text-dark">Email:</strong> <a href="mailto:{{ doc.doctorname.mail }}">{{ doc.doctorname.mail }}</a></li>
+                    <li class="mb-2"><strong class="text-dark">Phone:</strong> {{ doc.doctorname.phone }}</li>
+                    <li class="mb-0"><strong class="text-dark">About:</strong> {{ doc.doctorname.about }}</li>
+                </ul>
+
+                <div class="mt-auto">
+                    <a href="{% url 'appointment' doc.doctorname.id %}" class="btn btn-primary cf-btn-primary rounded-pill px-4"><i
+                            class="bi bi-calendar-plus me-2"></i>Book appointment</a>
+                    <a href="{% url 'doctorprofile' doc.doctorname.id %}" class="btn btn-outline-secondary rounded-pill ms-2 mt-2 mt-sm-0"><i
+                            class="bi bi-person-badge me-1"></i>Full profile</a>
+                </div>
+            </div>
+            <div class="col-md-4 bg-light d-flex align-items-center justify-content-center p-5">
+                {% if doc.doctorname.docpic %}
+                <img src="{{ doc.doctorname.docpic.url }}" alt=""
+                    class="rounded-4 shadow-sm border border-white" style="max-width: 100%; height: auto; max-height: 260px;">
+                {% else %}
+                <div class="text-center text-muted px-4">
+                    <i class="bi bi-image-alt fs-1 d-block mb-2 opacity-50"></i>
+                    <small>No portrait available yet</small>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="cf-empty-state card cf-card-hover border p-5 text-center mb-5">
+        <i class="bi bi-people-fill d-block mb-3 opacity-75"></i>
+        <p class="mb-0 text-muted">No doctors are linked with this treatment name yet.</p>
+        <a href="{% url 'treatment' %}" class="btn btn-outline-primary rounded-pill mt-3">Return to overview</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

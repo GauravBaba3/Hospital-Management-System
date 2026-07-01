@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    {% if labtech %}
+    <div class="alert alert-info border-0 rounded-3 mb-4 d-flex align-items-center gap-2" role="status">
+        <i class="bi bi-clipboard-heart flex-shrink-0"></i>
+        <span>You are viewing the portal as personnel linked to the lab technician directory.</span>
+    </div>
+    {% endif %}
+
+    <section class="cf-hero-doctors overflow-hidden cf-animate-in">
+        <div class="row g-0 align-items-stretch flex-column-reverse flex-lg-row">
+            <div class="col-lg-6 p-5 p-lg-6 d-flex flex-column justify-content-center">
+                <p class="text-primary fw-semibold mb-2 small text-uppercase mb-lg-3">Clinical excellence</p>
+                <h1 class="display-6 fw-bold mb-3 lh-sm">Modern care with safety-first technology</h1>
+                <p class="text-muted lead fs-6 mb-4">Coordinate trusted specialists, review treatment pathways, and book
+                    appointments—all from one responsive patient experience.</p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a class="btn btn-primary cf-btn-primary btn-lg px-4" href="{% url 'alldoctors' %}"><i
+                            class="bi bi-calendar2-check me-2"></i>Find a specialist</a>
+                    <a class="btn btn-outline-primary btn-lg rounded-3 px-4" href="{% url 'treatment' %}"><i
+                            class="bi bi-list-ul me-2"></i>Explore treatments</a>
+                </div>
+            </div>
+            <div class="col-lg-6 d-flex justify-content-center align-items-end p-4 pb-0 pb-lg-4 bg-white bg-opacity-50">
+                <img src="{% static 'images/doctorsimg/couple.png' %}" alt=""
+                    class="img-fluid rounded-top-4 shadow-sm" style="max-height: 380px; object-fit: contain;">
+            </div>
+        </div>
+    </section>
+
+    <section class="row row-cols-1 row-cols-md-3 g-4 mt-2 mt-lg-5">
+        <div class="col">
+            <div class="card h-100 cf-card-hover border-0 p-4 text-center">
+                <div class="text-primary mx-auto mb-3 d-inline-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10"
+                    style="width: 52px; height: 52px;"><i class="bi bi-heart-pulse fs-4"></i></div>
+                <h3 class="h6 fw-bold">Integrated care teams</h3>
+                <p class="text-muted small mb-0">Collaborative specialists share context for better outcomes.</p>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 cf-card-hover border-0 p-4 text-center">
+                <div class="text-success mx-auto mb-3 d-inline-flex align-items-center justify-content-center rounded-circle bg-success bg-opacity-10"
+                    style="width: 52px; height: 52px;"><i class="bi bi-shield-check fs-4"></i></div>
+                <h3 class="h6 fw-bold">Secure messaging</h3>
+                <p class="text-muted small mb-0">Built on Django authentication with HIPAA-minded patterns.</p>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 cf-card-hover border-0 p-4 text-center">
+                <div class="text-warning mx-auto mb-3 d-inline-flex align-items-center justify-content-center rounded-circle bg-warning bg-opacity-25"
+                    style="width: 52px; height: 52px;"><i class="bi bi-graph-up-arrow fs-4"></i></div>
+                <h3 class="h6 fw-bold">Transparent workflows</h3>
+                <p class="text-muted small mb-0">Track doctors, bookings, labs, and billing in one cohesive UI.</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

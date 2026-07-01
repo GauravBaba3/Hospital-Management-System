@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Find doctors{% endblock %}
+
+{% block content %}
+<div class="container py-4 py-lg-5">
+    <header class="cf-page-header cf-animate-in text-center text-lg-start">
+        <div class="row align-items-lg-end g-4">
+            <div class="col-lg-7">
+                <h1 class="cf-page-title h3 mb-2">Directory of clinicians</h1>
+                <p class="cf-page-lead mb-0">Filter by specialty or name—every profile links to richer context and scheduling.</p>
+            </div>
+            <div class="col-lg-5">
+                <label for="doctorSearch" class="form-label visually-hidden">Search doctors</label>
+                <div class="input-group input-group-lg shadow-sm rounded-4 overflow-hidden">
+                    <span class="input-group-text border-0 bg-white"><i class="bi bi-search text-muted"></i></span>
+                    <input type="search" id="doctorSearch" class="form-control border-0 shadow-none py-3"
+                        placeholder="Search by name or specialty..." autocomplete="off">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    {% if alldoc %}
+    <div class="row row-cols-1 row-cols-lg-2 g-4" id="doctorGrid">
+        {% for doc in alldoc %}
+        <div class="col doctor-card"
+            data-name="{{ doc.name|lower }}"
+            data-spec="{{ doc.specs|lower }} {{ doc.get_specs_display|lower }}"
+            data-vis="1">
+            <div class="card h-100 cf-card-hover border-0 overflow-hidden">
+                <div class="row g-0">
+                    <div class="col-sm-8 p-4 d-flex flex-column">
+                        <div class="mb-3">
+                            <span class="badge bg-primary bg-opacity-10 text-primary fw-semibold text-uppercase small">{{ doc.get_specs_display }}</span>
+                        </div>
+                        <h2 class="h5 fw-bold mb-2">{{ doc.name }}</h2>
+                        <p class="text-muted small mb-3"><i class="bi bi-person-badge me-1"></i>Age {{ doc.age }} • {{ doc.loc }}</p>
+                        <div class="mt-auto d-flex flex-wrap gap-2">
+                            <a href="{% url 'doctorprofile' doc.id %}" class="btn btn-outline-primary btn-sm rounded-pill"><i
+                                    class="bi bi-eye me-1"></i>View profile</a>
+                            <a href="{% url 'appointment' doc.id %}" class="btn btn-primary cf-btn-primary btn-sm rounded-pill"><i
+                                    class="bi bi-calendar-plus me-1"></i>Book</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 bg-light bg-opacity-75 d-flex align-items-center justify-content-center p-3">
+                        {% if doc.docpic %}
+                        <img src="{{ doc.docpic.url }}" alt="" class="rounded-4 shadow-sm"
+                            style="width: 120px; height: 120px; object-fit: cover;">
+                        {% else %}
+                        <span class="d-inline-flex rounded-4 bg-white border cf-empty-state-placeholder align-items-center justify-content-center shadow-sm text-muted"
+                            style="width: 120px; height: 120px;"><i class="bi bi-camera-off fs-2"></i></span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <p id="doctorEmpty" class="cf-empty-state d-none mt-5" role="status">
+        <i class="bi bi-emoji-neutral d-block mb-3"></i>
+        No doctors match your search. Try clearing the filter.</p>
+    {% else %}
+    <div class="cf-empty-state card border-0 cf-card-hover mt-4">
+        <i class="bi bi-people d-block mb-3"></i>
+        <p class="mb-3">Doctors will appear here after they are added in the administrative console.</p>
+        <a href="{% url 'doctorshome' %}" class="btn btn-outline-primary rounded-pill">Return home</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (function () {
+        var input = document.getElementById('doctorSearch');
+        if (!input) return;
+        var grid = document.getElementById('doctorGrid');
+        var emptyEl = document.getElementById('doctorEmpty');
+        if (!grid) return;
+        function apply() {
+            var q = (input.value || '').trim().toLowerCase();
+            var visible = 0;
+            grid.querySelectorAll('.doctor-card').forEach(function (col) {
+                var name = col.getAttribute('data-name') || '';
+                var spec = col.getAttribute('data-spec') || '';
+                var show = !q || name.indexOf(q) !== -1 || spec.indexOf(q) !== -1;
+                col.classList.toggle('d-none', !show);
+                if (show) visible++;
+            });
+            if (emptyEl) emptyEl.classList.toggle('d-none', visible !== 0);
+        }
+        input.addEventListener('input', apply);
+        apply();
+    })();
+</script>
+{% endblock %}
